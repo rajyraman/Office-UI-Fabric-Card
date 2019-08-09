@@ -62,7 +62,6 @@ export class OfficeFabricCard
     this._props.mainHeader = context.parameters.mainHeader.raw;
     this._props.subHeader = context.parameters.subHeader.raw;
     this._props.cardImage = context.parameters.heroImage.raw;
-
     const cardData: IContactCard[] = dataSet.sortedRecordIds.map(r => ({
       key: r,
       values: dataSetColumns.map(c => ({

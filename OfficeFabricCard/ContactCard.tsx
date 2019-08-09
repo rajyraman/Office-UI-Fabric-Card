@@ -1,7 +1,7 @@
 import * as React from "react";
 import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
-import { Persona } from "office-ui-fabric-react/lib/Persona";
-import { Card } from "@uifabric/react-cards";
+import { Persona, PersonaSize } from "office-ui-fabric-react/lib/Persona";
+import { Card, ICardItemTokens, ICardTokens } from "@uifabric/react-cards";
 import {
   FontWeights,
   mergeStyleSets,
@@ -14,7 +14,9 @@ import {
   Stack,
   IStackTokens,
   IStackStyles,
-  Text
+  Text,
+  ImageCoverStyle,
+  ITextStyles
 } from "office-ui-fabric-react";
 import { DefaultPalette } from "office-ui-fabric-react/lib/Styling";
 
@@ -51,9 +53,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
   const styles = mergeStyleSets({
     descriptionText: {
       color: "#333333",
-      fontSize: 14,
-      fontWeight: FontWeights.regular,
-      padding: 10
+      padding: 10,
     },
     helpfulText: {
       color: "#333333",
@@ -65,17 +65,19 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       fontSize: 16,
       padding: 4,
       fontWeight: FontWeights.regular
+    },
+    cardItem: {
+      minHeight: 260
+    },
+    persona: {
+      padding: 5
+    },
+    caption: {
+      textAlign: "center",
+      fontWeight: FontWeights.semibold
     }
   });
 
-  const tokens = {
-    sectionStack: {
-      childrenGap: 30
-    },
-    cardFooterStack: {
-      childrenGap: 16
-    }
-  };
   const sectionStackTokens: IStackTokens = { childrenGap: 20 };
 
   const stackStyles: IStackStyles = {
@@ -84,13 +86,23 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       overflow: "auto"
     }
   };
-
+  const captionStyles: ITextStyles = {
+    root: {
+      textAlign: 'center'
+    }
+  }
+  const cardTokens: ICardTokens = {
+    width: 400,
+    padding: 20,
+    height: 600,
+    boxShadow: '0 0 20px rgba(0, 0, 0, .2)'
+  }
   const cardClicked = (ev: React.MouseEvent<HTMLElement>): void => {
     if(props.triggerNavigate){
       props.triggerNavigate(ev.currentTarget.id);
     }
   };
-
+  console.log(props.cardData);
   return (
     <Stack
       horizontal
@@ -101,39 +113,31 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       styles={stackStyles}
     >
       {props.cardData.map(c => (
-        <Card onClick={cardClicked} width={400} cellPadding={20} id={c.key}>
+        <Card onClick={cardClicked} id={c.key} tokens={cardTokens}>
           <Persona
             text={getAttributeValue(c.values, props.mainHeader)}
             secondaryText={getAttributeValue(c.values, props.subHeader)}
+            optionalText={getAttributeValue(c.values, props.subHeader)}
+            size={PersonaSize.size56}
+            className={styles.persona}
           />
-          <Card.Item>
+          <Card.Item className={styles.cardItem}>
             <Image
               src={`data:image/jpg;base64,${getAttributeValue(
                 c.values,
                 props.cardImage
               )}`}
               imageFit={ImageFit.contain}
-              height={220}
+              maximizeFrame={true}
+              coverStyle={ImageCoverStyle.portrait}
             />
           </Card.Item>
-          <Text className={styles.descriptionText}>
+          <Text variant={"smallPlus"} className={styles.caption}>
+            {getAttributeValue(c.values, props.bodyCaption)}
+          </Text>          
+          <Text className={styles.descriptionText} variant={"medium"}>
             {getAttributeValue(c.values, props.body)}
           </Text>
-          <Card.Item>
-            <Stack
-              horizontal
-              horizontalAlign="end"
-              tokens={tokens.cardFooterStack}
-              padding="12px 0 0"
-              styles={{ root: { borderTop: "1px solid #F3F2F1" } }}
-            >
-              <Icon
-                iconName="Heart"
-                className={styles.icon}
-                color={ColorClassNames.red}
-              />
-            </Stack>
-          </Card.Item>
         </Card>
       ))}
     </Stack>

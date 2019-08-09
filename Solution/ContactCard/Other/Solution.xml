@@ -8,7 +8,7 @@
       <LocalizedName description="ContactCard" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.1</Version>
+    <Version>1.4</Version>
     <!-- Solution Package Type: Unmanaged(0)/Managed(1)/Both(2)-->
     <Managed>2</Managed>
     <Publisher>
@@ -16,11 +16,11 @@
       <UniqueName>rajyraman</UniqueName>
       <LocalizedNames>
         <!-- Localized Cds Publisher Name in language code-->
-        <LocalizedName description="rajyraman" languagecode="1033" />
+        <LocalizedName description="Natraj Yegnaraman" languagecode="1033" />
       </LocalizedNames>
       <Descriptions>
         <!-- Description of Cds Publisher in language code -->
-        <Description description="rajyraman" languagecode="1033" />
+        <Description description="Natraj Yegnaraman" languagecode="1033" />
       </Descriptions>
       <EMailAddress xsi:nil="true"></EMailAddress>
       <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
