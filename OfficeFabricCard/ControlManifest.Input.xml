@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="RYR" constructor="OfficeFabricCard" version="1.4.0" display-name-key="Cards" description-key="Display Dataset as Cards" control-type="standard">
+  <control namespace="RYR" constructor="OfficeFabricCard" version="1.4.1" display-name-key="Cards" description-key="Display Dataset as Cards" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="sampleDataSet" display-name-key="Dataset">
       <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->

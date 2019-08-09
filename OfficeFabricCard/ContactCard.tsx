@@ -18,7 +18,6 @@ import {
   ImageCoverStyle,
   ITextStyles
 } from "office-ui-fabric-react";
-import { DefaultPalette } from "office-ui-fabric-react/lib/Styling";
 
 initializeIcons(undefined, { disableWarnings: true });
 
@@ -41,19 +40,11 @@ export interface IContactCard {
   values: IAttributeValue[];
 }
 
-const getAttributeValue = (
-  attributes: IAttributeValue[],
-  attributeName: string
-) => {
-  if (attributes.findIndex(v => v.attribute == attributeName) == -1) return "";
-  return attributes.find(v => v.attribute == attributeName)!.value;
-};
-
 export function ContactCard(props: IContactCardProps): JSX.Element {
   const styles = mergeStyleSets({
     descriptionText: {
       color: "#333333",
-      padding: 10,
+      padding: 10
     },
     helpfulText: {
       color: "#333333",
@@ -78,6 +69,15 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     }
   });
 
+  const getAttributeValue = (
+    attributes: IAttributeValue[],
+    attributeName: string
+  ) => {
+    if (attributes.findIndex(v => v.attribute == attributeName) == -1)
+      return "";
+    return attributes.find(v => v.attribute == attributeName)!.value;
+  };
+
   const sectionStackTokens: IStackTokens = { childrenGap: 20 };
 
   const stackStyles: IStackStyles = {
@@ -86,23 +86,20 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       overflow: "auto"
     }
   };
-  const captionStyles: ITextStyles = {
-    root: {
-      textAlign: 'center'
-    }
-  }
+
   const cardTokens: ICardTokens = {
     width: 400,
     padding: 20,
     height: 600,
-    boxShadow: '0 0 20px rgba(0, 0, 0, .2)'
-  }
+    boxShadow: "0 0 20px rgba(0, 0, 0, .2)"
+  };
+
   const cardClicked = (ev: React.MouseEvent<HTMLElement>): void => {
-    if(props.triggerNavigate){
+    if (props.triggerNavigate) {
       props.triggerNavigate(ev.currentTarget.id);
     }
   };
-  console.log(props.cardData);
+
   return (
     <Stack
       horizontal
@@ -134,7 +131,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
           </Card.Item>
           <Text variant={"smallPlus"} className={styles.caption}>
             {getAttributeValue(c.values, props.bodyCaption)}
-          </Text>          
+          </Text>
           <Text className={styles.descriptionText} variant={"medium"}>
             {getAttributeValue(c.values, props.body)}
           </Text>

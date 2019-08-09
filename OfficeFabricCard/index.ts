@@ -2,7 +2,12 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-import { IContactCardProps, IContactCard, IAttributeValue, ContactCard } from "./ContactCard";
+import {
+  IContactCardProps,
+  IContactCard,
+  IAttributeValue,
+  ContactCard
+} from "./ContactCard";
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export class OfficeFabricCard
@@ -18,12 +23,14 @@ export class OfficeFabricCard
     cardData: []
   };
 
-  private navigateToRecord(id: string): void{
-    let record = this._context.parameters.sampleDataSet.records[id].getNamedReference();
+  private navigateToRecord(id: string): void {
+    let record = this._context.parameters.sampleDataSet.records[
+      id
+    ].getNamedReference();
     console.log(record);
     this._context.navigation.openForm({
       entityName: record.entityType!,
-      entityId: record.id,
+      entityId: record.id
     });
   }
 
