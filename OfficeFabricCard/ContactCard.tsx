@@ -20,7 +20,8 @@ import {
   IStackStyles,
   Text,
   ImageCoverStyle,
-  ITextStyles
+  ITextStyles,
+  IImageStyles
 } from "office-ui-fabric-react";
 
 initializeIcons(undefined, { disableWarnings: true });
@@ -64,7 +65,6 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       fontWeight: FontWeights.regular
     },
     cardItem: {
-      minHeight: 200
     },
     persona: {
       padding: 5
@@ -72,6 +72,9 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     caption: {
       textAlign: "center",
       fontWeight: FontWeights.semibold
+    },
+    imageStyle: {
+      minHeight: 144
     }
   });
 
@@ -110,7 +113,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
   const rightCommands: ICommandBarItemProps[] = [
     {
       key: "next",
-      name: "Next",
+      name: "Load more..",
       iconProps: {
         iconName: "ChevronRight"
       },
@@ -122,18 +125,6 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     }
   ];
   const leftCommands: ICommandBarItemProps[] = [
-    {
-      key: "prev",
-      name: "Previous",
-      iconProps: {
-        iconName: "ChevronLeft"
-      },
-      onClick: () => {
-        if (props.triggerPaging) {
-          props.triggerPaging("previous");
-        }
-      }
-    }
   ];
 
   return (
@@ -160,11 +151,15 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
                 text={getAttributeValue(c.values, props.mainHeader)}
                 secondaryText={getAttributeValue(c.values, props.subHeader)}
                 optionalText={getAttributeValue(c.values, props.subHeader)}
-                size={PersonaSize.size56}
+                size={
+                  props.layout == "compact"
+                    ? PersonaSize.small
+                    : PersonaSize.size56
+                }
                 className={styles.persona}
               />
             </Card.Item>
-            <Card.Item className={styles.cardItem}>
+            <Card.Item className={styles.cardItem} grow>
               <Image
                 src={`data:image/jpg;base64,${getAttributeValue(
                   c.values,
@@ -173,20 +168,20 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
                 imageFit={ImageFit.contain}
                 maximizeFrame={true}
                 coverStyle={ImageCoverStyle.portrait}
+                className={styles.imageStyle}
               />
             </Card.Item>
-            <Card.Section>
+            <Stack gap={10}>
               <Text variant={"smallPlus"} className={styles.caption}>
                 {getAttributeValue(c.values, props.bodyCaption)}
-              </Text>
+              </Text>              
               <Text className={styles.descriptionText} variant={"medium"}>
                 {getAttributeValue(c.values, props.body)}
               </Text>
-            </Card.Section>
+            </Stack>
           </Card>
         ))}
       </Stack>
-      <CommandBar farItems={rightCommands} items={leftCommands} />
     </React.Fragment>
   );
 }
