@@ -1,5 +1,9 @@
 import * as React from "react";
 import { initializeIcons } from "office-ui-fabric-react/lib/Icons";
+import {
+  CommandBar,
+  ICommandBarItemProps
+} from "office-ui-fabric-react/lib/CommandBar";
 import { Persona, PersonaSize } from "office-ui-fabric-react/lib/Persona";
 import { Card, ICardItemTokens, ICardTokens } from "@uifabric/react-cards";
 import {
@@ -28,7 +32,9 @@ export interface IContactCardProps {
   subHeader: string;
   cardImage: string;
   cardData: IContactCard[];
+  layout?: string;
   triggerNavigate?: (id: string) => void;
+  triggerPaging?: (pageCommand: string) => void;
 }
 export interface IAttributeValue {
   attribute: string;
@@ -58,7 +64,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       fontWeight: FontWeights.regular
     },
     cardItem: {
-      minHeight: 260
+      minHeight: 200
     },
     persona: {
       padding: 5
@@ -83,14 +89,15 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
   const stackStyles: IStackStyles = {
     root: {
       width: "100%",
-      overflow: "auto"
+      overflow: "auto",
+      paddingTop: 10,
+      paddingBottom: 10
     }
   };
 
   const cardTokens: ICardTokens = {
     width: 400,
     padding: 20,
-    height: 600,
     boxShadow: "0 0 20px rgba(0, 0, 0, .2)"
   };
 
@@ -100,43 +107,86 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     }
   };
 
+  const rightCommands: ICommandBarItemProps[] = [
+    {
+      key: "next",
+      name: "Next",
+      iconProps: {
+        iconName: "ChevronRight"
+      },
+      onClick: () => {
+        if (props.triggerPaging) {
+          props.triggerPaging("next");
+        }
+      }
+    }
+  ];
+  const leftCommands: ICommandBarItemProps[] = [
+    {
+      key: "prev",
+      name: "Previous",
+      iconProps: {
+        iconName: "ChevronLeft"
+      },
+      onClick: () => {
+        if (props.triggerPaging) {
+          props.triggerPaging("previous");
+        }
+      }
+    }
+  ];
+
   return (
-    <Stack
-      horizontal
-      verticalFill
-      tokens={sectionStackTokens}
-      grow
-      wrap
-      styles={stackStyles}
-    >
-      {props.cardData.map(c => (
-        <Card onClick={cardClicked} id={c.key} tokens={cardTokens}>
-          <Persona
-            text={getAttributeValue(c.values, props.mainHeader)}
-            secondaryText={getAttributeValue(c.values, props.subHeader)}
-            optionalText={getAttributeValue(c.values, props.subHeader)}
-            size={PersonaSize.size56}
-            className={styles.persona}
-          />
-          <Card.Item className={styles.cardItem}>
-            <Image
-              src={`data:image/jpg;base64,${getAttributeValue(
-                c.values,
-                props.cardImage
-              )}`}
-              imageFit={ImageFit.contain}
-              maximizeFrame={true}
-              coverStyle={ImageCoverStyle.portrait}
-            />
-          </Card.Item>
-          <Text variant={"smallPlus"} className={styles.caption}>
-            {getAttributeValue(c.values, props.bodyCaption)}
-          </Text>
-          <Text className={styles.descriptionText} variant={"medium"}>
-            {getAttributeValue(c.values, props.body)}
-          </Text>
-        </Card>
-      ))}
-    </Stack>
+    <React.Fragment>
+      <CommandBar farItems={rightCommands} items={leftCommands} />
+      <Stack
+        horizontal
+        verticalFill
+        tokens={sectionStackTokens}
+        grow
+        wrap
+        styles={stackStyles}
+      >
+        {props.cardData.map(c => (
+          <Card
+            onClick={cardClicked}
+            id={c.key}
+            tokens={cardTokens}
+            key={c.key}
+            compact={props.layout == "compact"}
+          >
+            <Card.Item>
+              <Persona
+                text={getAttributeValue(c.values, props.mainHeader)}
+                secondaryText={getAttributeValue(c.values, props.subHeader)}
+                optionalText={getAttributeValue(c.values, props.subHeader)}
+                size={PersonaSize.size56}
+                className={styles.persona}
+              />
+            </Card.Item>
+            <Card.Item className={styles.cardItem}>
+              <Image
+                src={`data:image/jpg;base64,${getAttributeValue(
+                  c.values,
+                  props.cardImage
+                )}`}
+                imageFit={ImageFit.contain}
+                maximizeFrame={true}
+                coverStyle={ImageCoverStyle.portrait}
+              />
+            </Card.Item>
+            <Card.Section>
+              <Text variant={"smallPlus"} className={styles.caption}>
+                {getAttributeValue(c.values, props.bodyCaption)}
+              </Text>
+              <Text className={styles.descriptionText} variant={"medium"}>
+                {getAttributeValue(c.values, props.body)}
+              </Text>
+            </Card.Section>
+          </Card>
+        ))}
+      </Stack>
+      <CommandBar farItems={rightCommands} items={leftCommands} />
+    </React.Fragment>
   );
 }

@@ -23,6 +23,21 @@ export class OfficeFabricCard
     cardData: []
   };
 
+  private navigateToPage(pageCommand: string): void{
+    switch(pageCommand){
+      case 'next':
+        if(this._context.parameters.sampleDataSet.paging.hasNextPage){
+          this._context.parameters.sampleDataSet.paging.loadNextPage();
+        }
+        break;
+        case 'previous':
+            if(this._context.parameters.sampleDataSet.paging.hasPreviousPage){
+              this._context.parameters.sampleDataSet.paging.loadPreviousPage();
+            }
+            break;        
+    }
+  }
+
   private navigateToRecord(id: string): void {
     let record = this._context.parameters.sampleDataSet.records[
       id
@@ -52,6 +67,7 @@ export class OfficeFabricCard
     this._container = container;
     this._context = context;
     this._props.triggerNavigate = this.navigateToRecord.bind(this);
+    this._props.triggerPaging = this.navigateToPage.bind(this);
   }
 
   /**
@@ -69,6 +85,8 @@ export class OfficeFabricCard
     this._props.mainHeader = context.parameters.mainHeader.raw;
     this._props.subHeader = context.parameters.subHeader.raw;
     this._props.cardImage = context.parameters.heroImage.raw;
+    this._props.layout = context.parameters.layout.raw;
+
     const cardData: IContactCard[] = dataSet.sortedRecordIds.map(r => ({
       key: r,
       values: dataSetColumns.map(c => ({
