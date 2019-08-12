@@ -20,7 +20,8 @@ export class OfficeFabricCard
     bodyCaption: "",
     body: "",
     cardImage: "",
-    cardData: []
+    cardData: [],
+    totalResultCount: 0
   };
 
   private navigateToPage(pageCommand: string): void{
@@ -86,6 +87,7 @@ export class OfficeFabricCard
     this._props.subHeader = context.parameters.subHeader.raw;
     this._props.cardImage = context.parameters.heroImage.raw;
     this._props.layout = context.parameters.layout.raw;
+    this._props.totalResultCount = dataSet.paging.totalResultCount;
 
     const cardData: IContactCard[] = dataSet.sortedRecordIds.map(r => ({
       key: r,

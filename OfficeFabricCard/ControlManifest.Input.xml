@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="RYR" constructor="OfficeFabricCard" version="1.4.6" display-name-key="Cards" description-key="Display Dataset as Cards" control-type="standard">
+  <control namespace="RYR" constructor="OfficeFabricCard" version="2.0.0" display-name-key="Cards" description-key="Display Dataset as Cards" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="sampleDataSet" display-name-key="Dataset">
       <!-- 'property-set' node represents a unique, configurable property that each record in the dataset must provide. -->
@@ -8,7 +8,10 @@
       <property-set name="samplePropertySet" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
       -->
     </data-set>
-    <property name="layout" display-name-key="Layout" description-key="Full by default. Type compact if you need compact layout" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="layout" display-name-key="Use compact layout?" description-key="Full by default. Choose compact if you need compact layout" of-type="Enum" usage="input" required="false">
+        <value name="compact" display-name-key="Compact" description-key="Use compact layout">compact</value>
+			  <value name="full" display-name-key="Full" description-key="Use full layout">full</value>
+    </property>
     <property name="mainHeader" display-name-key="Main Header" description-key="Logical name of the Main Header field" of-type="SingleLine.Text" usage="input" required="true" />
     <property name="subHeader" display-name-key="Sub Header" description-key="Logical name of the Sub Header field" of-type="SingleLine.Text" usage="input" required="true" />
     <property name="heroImage" display-name-key="Hero Image" description-key="Logical name of the Hero Image field" of-type="SingleLine.Text" usage="input" required="true" />

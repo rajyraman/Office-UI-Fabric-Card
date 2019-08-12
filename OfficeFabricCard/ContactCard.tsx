@@ -34,6 +34,7 @@ export interface IContactCardProps {
   cardImage: string;
   cardData: IContactCard[];
   layout?: string;
+  totalResultCount: number,
   triggerNavigate?: (id: string) => void;
   triggerPaging?: (pageCommand: string) => void;
 }
@@ -65,6 +66,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       fontWeight: FontWeights.regular
     },
     cardItem: {
+      maxHeight: 144
     },
     persona: {
       padding: 5
@@ -113,10 +115,11 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
   const rightCommands: ICommandBarItemProps[] = [
     {
       key: "next",
-      name: "Load more..",
+      name: `Load more (${props.cardData.length} of ${props.totalResultCount})..`,
       iconProps: {
         iconName: "ChevronRight"
       },
+      disabled: props.cardData.length == props.totalResultCount,
       onClick: () => {
         if (props.triggerPaging) {
           props.triggerPaging("next");
@@ -159,14 +162,13 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
                 className={styles.persona}
               />
             </Card.Item>
-            <Card.Item className={styles.cardItem} grow>
+            <Card.Item className={styles.cardItem} shrink>
               <Image
                 src={`data:image/jpg;base64,${getAttributeValue(
                   c.values,
                   props.cardImage
                 )}`}
                 imageFit={ImageFit.contain}
-                maximizeFrame={true}
                 coverStyle={ImageCoverStyle.portrait}
                 className={styles.imageStyle}
               />
