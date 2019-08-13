@@ -72,7 +72,6 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       fontWeight: FontWeights.regular
     },
     cardItem: {
-      maxHeight: 144
     },
     persona: {
       padding: 5
@@ -82,12 +81,11 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       fontWeight: FontWeights.semibold
     },
     imageStyle: {
-      minHeight: 144
+      textAlign: "-webkit-center"
     },
     scrollableContainer:{
-      position: 'relative',
-      minHeight: '60vmax',
-      maxHeight: 'inherit'
+      position: "relative",
+      minHeight: "70vh",
     }
   });
 
@@ -115,7 +113,6 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
   };
 
   const cardTokens: ICardTokens = {
-    width: 400,
     padding: 20,
     boxShadow: "0 0 20px rgba(0, 0, 0, .2)"
   };
@@ -173,14 +170,13 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
                 className={styles.persona}
               />
             </Card.Item>
-            <Card.Item className={styles.cardItem} shrink>
+            <Card.Item grow>
               <Image
                 src={`data:image/jpg;base64,${getAttributeValue(
                   c.values,
                   props.cardImage
                 )}`}
-                imageFit={ImageFit.contain}
-                coverStyle={ImageCoverStyle.portrait}
+                shouldStartVisible={true}
                 className={styles.imageStyle}
               />
             </Card.Item>
