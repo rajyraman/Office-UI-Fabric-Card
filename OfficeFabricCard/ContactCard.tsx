@@ -21,8 +21,14 @@ import {
   Text,
   ImageCoverStyle,
   ITextStyles,
-  IImageStyles
+  IImageStyles,
+  TextStyles
 } from "office-ui-fabric-react";
+import {
+  ScrollablePane,
+  ScrollbarVisibility
+} from "office-ui-fabric-react/lib/ScrollablePane";
+import { Sticky, StickyPositionType } from "office-ui-fabric-react/lib/Sticky";
 
 initializeIcons(undefined, { disableWarnings: true });
 
@@ -34,7 +40,7 @@ export interface IContactCardProps {
   cardImage: string;
   cardData: IContactCard[];
   layout?: string;
-  totalResultCount: number,
+  totalResultCount: number;
   triggerNavigate?: (id: string) => void;
   triggerPaging?: (pageCommand: string) => void;
 }
@@ -77,6 +83,11 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     },
     imageStyle: {
       minHeight: 144
+    },
+    scrollableContainer:{
+      position: 'relative',
+      minHeight: '60vmax',
+      maxHeight: 'inherit'
     }
   });
 
@@ -89,7 +100,10 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     return attributes.find(v => v.attribute == attributeName)!.value;
   };
 
-  const sectionStackTokens: IStackTokens = { childrenGap: 20 };
+  const stackTokens: IStackTokens = {
+    childrenGap: 10,
+    padding: 10
+  };
 
   const stackStyles: IStackStyles = {
     root: {
@@ -115,7 +129,9 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
   const rightCommands: ICommandBarItemProps[] = [
     {
       key: "next",
-      name: `Load more (${props.cardData.length} of ${props.totalResultCount})..`,
+      name: `Load more (${props.cardData.length} of ${
+        props.totalResultCount
+      })..`,
       iconProps: {
         iconName: "ChevronRight"
       },
@@ -127,20 +143,15 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       }
     }
   ];
-  const leftCommands: ICommandBarItemProps[] = [
-  ];
+  const leftCommands: ICommandBarItemProps[] = [];
 
   return (
-    <React.Fragment>
-      <CommandBar farItems={rightCommands} items={leftCommands} />
-      <Stack
-        horizontal
-        verticalFill
-        tokens={sectionStackTokens}
-        grow
-        wrap
-        styles={stackStyles}
-      >
+    <div className={styles.scrollableContainer}>
+    <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+      <Sticky stickyPosition={StickyPositionType.Header}>
+        <CommandBar farItems={rightCommands} items={leftCommands} />
+      </Sticky>
+      <Stack horizontal tokens={stackTokens} wrap styles={stackStyles}>
         {props.cardData.map(c => (
           <Card
             onClick={cardClicked}
@@ -173,10 +184,10 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
                 className={styles.imageStyle}
               />
             </Card.Item>
-            <Stack gap={10}>
+            <Stack>
               <Text variant={"smallPlus"} className={styles.caption}>
                 {getAttributeValue(c.values, props.bodyCaption)}
-              </Text>              
+              </Text>
               <Text className={styles.descriptionText} variant={"medium"}>
                 {getAttributeValue(c.values, props.body)}
               </Text>
@@ -184,6 +195,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
           </Card>
         ))}
       </Stack>
-    </React.Fragment>
+    </ScrollablePane>
+    </div>
   );
 }
