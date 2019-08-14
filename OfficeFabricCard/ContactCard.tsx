@@ -71,8 +71,7 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
       padding: 4,
       fontWeight: FontWeights.regular
     },
-    cardItem: {
-    },
+    cardItem: {},
     persona: {
       padding: 5
     },
@@ -83,9 +82,9 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
     imageStyle: {
       textAlign: "-webkit-center"
     },
-    scrollableContainer:{
+    scrollableContainer: {
       position: "relative",
-      minHeight: "70vh",
+      minHeight: "70vh"
     }
   });
 
@@ -144,54 +143,55 @@ export function ContactCard(props: IContactCardProps): JSX.Element {
 
   return (
     <div className={styles.scrollableContainer}>
-    <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-      <Sticky stickyPosition={StickyPositionType.Header}>
-        <CommandBar farItems={rightCommands} items={leftCommands} />
-      </Sticky>
-      <Stack horizontal tokens={stackTokens} wrap styles={stackStyles}>
-        {props.cardData.map(c => (
-          <Card
-            onClick={cardClicked}
-            id={c.key}
-            tokens={cardTokens}
-            key={c.key}
-            compact={props.layout == "compact"}
-          >
-            <Card.Item>
-              <Persona
-                text={getAttributeValue(c.values, props.mainHeader)}
-                secondaryText={getAttributeValue(c.values, props.subHeader)}
-                optionalText={getAttributeValue(c.values, props.subHeader)}
-                size={
-                  props.layout == "compact"
-                    ? PersonaSize.small
-                    : PersonaSize.size56
-                }
-                className={styles.persona}
-              />
-            </Card.Item>
-            <Card.Item grow>
-              <Image
-                src={`data:image/jpg;base64,${getAttributeValue(
-                  c.values,
-                  props.cardImage
-                )}`}
-                shouldStartVisible={true}
-                className={styles.imageStyle}
-              />
-            </Card.Item>
-            <Stack>
-              <Text variant={"smallPlus"} className={styles.caption}>
-                {getAttributeValue(c.values, props.bodyCaption)}
-              </Text>
-              <Text className={styles.descriptionText} variant={"medium"}>
-                {getAttributeValue(c.values, props.body)}
-              </Text>
-            </Stack>
-          </Card>
-        ))}
-      </Stack>
-    </ScrollablePane>
+      <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+        <Sticky stickyPosition={StickyPositionType.Header}>
+          <CommandBar farItems={rightCommands} items={leftCommands} />
+        </Sticky>
+        <Stack horizontal tokens={stackTokens} wrap styles={stackStyles}>
+          {props.cardData.map(c => (
+            <Card
+              onClick={cardClicked}
+              id={c.key}
+              tokens={cardTokens}
+              key={c.key}
+              compact={props.layout == "compact"}
+            >
+              <Card.Item>
+                <Persona
+                  text={getAttributeValue(c.values, props.mainHeader)}
+                  secondaryText={getAttributeValue(c.values, props.subHeader)}
+                  optionalText={getAttributeValue(c.values, props.subHeader)}
+                  size={
+                    props.layout == "compact"
+                      ? PersonaSize.small
+                      : PersonaSize.size56
+                  }
+                  className={styles.persona}
+                />
+              </Card.Item>
+              {props.layout != "compact" && (
+                <Card.Item grow>
+                  <Image
+                    src={`data:image/jpg;base64,${getAttributeValue(
+                      c.values,
+                      props.cardImage
+                    )}`}
+                    className={styles.imageStyle}
+                  />
+                </Card.Item>
+              )}
+              <Stack>
+                <Text variant={"smallPlus"} className={styles.caption}>
+                  {getAttributeValue(c.values, props.bodyCaption)}
+                </Text>
+                <Text className={styles.descriptionText} variant={"medium"}>
+                  {getAttributeValue(c.values, props.body)}
+                </Text>
+              </Stack>
+            </Card>
+          ))}
+        </Stack>
+      </ScrollablePane>
     </div>
   );
 }
